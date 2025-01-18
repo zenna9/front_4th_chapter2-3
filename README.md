@@ -78,7 +78,6 @@ TanstackQuery를 이용하여 코드를 개선하기
 체크포인트
 - [ ] 모든 API 호출이 TanStack Query의 useQuery와 useMutation으로 대체되었는가?
 - [ ] 쿼리 키가 적절히 설정되었는가?
-- [ ] axios와 useState가 아닌 선언적인 함수형 프로그래밍이 적절히 적용되었는가?
+- [ ] fetch와 useState가 아닌 선언적인 함수형 프로그래밍이 적절히 적용되었는가?
 - [ ] 캐싱과 리프레시 전략이 올바르게 구현되었는가?
-
 ```
