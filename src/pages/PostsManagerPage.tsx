@@ -48,10 +48,10 @@ const PostsManager = () => {
   const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState(queryParams.get("tag") || "");
-  const [comments, setComments] = useState({});
+  const [comments, setComments] = useState<Record<Post["id"], Comment[]>>({});
   // const [comments, setComments] = useState<Comments | null>(null);
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null);
-  const [newComment, setNewComment] = useState({ body: "", postId: null, userId: 1 });
+  const [newComment, setNewComment] = useState<Comment[]>([{ body: "", postId: null, userId: 1 }]);
   const [showAddCommentDialog, setShowAddCommentDialog] = useState(false);
   const [showEditCommentDialog, setShowEditCommentDialog] = useState(false);
   const [showPostDetailDialog, setShowPostDetailDialog] = useState(false);
@@ -230,7 +230,7 @@ const PostsManager = () => {
         body: JSON.stringify(newComment),
       });
       const data = await response.json();
-      setComments((prev: Comment[]) => ({
+      setComments((prev) => ({
         ...prev,
         [data.postId]: [...(prev[data.postId] || []), data],
       }));
@@ -283,7 +283,7 @@ const PostsManager = () => {
       const response = await fetch(`/api/comments/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ likes: comments[postId].find((c) => c.id === id).likes + 1 }),
+        body: JSON.stringify({ likes: comments?.[postId]?.find?.((c) => c.id === id)?.likes ?? 0 + 1 }),
       });
       const data = await response.json();
       setComments((prev) => ({
@@ -298,7 +298,7 @@ const PostsManager = () => {
   };
 
   // 게시물 상세 보기
-  const openPostDetail = (post) => {
+  const openPostDetail = (post: Post) => {
     setSelectedPost(post);
     fetchComments(post.id);
     setShowPostDetailDialog(true);
@@ -435,7 +435,7 @@ const PostsManager = () => {
   );
 
   // 댓글 렌더링
-  const renderComments = (postId) => (
+  const renderComments = (postId: number) => (
     <div className="mt-2">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-sm font-semibold">댓글</h3>

@@ -25,9 +25,9 @@ type CommentUser = Pick<UserDetail, "id" | "username" | "fullName">;
 export interface Comment {
   id: number;
   body: string;
-  postId: number;
-  likes: number;
-  user: CommentUser;
+  postId: number | null;
+  likes?: number;
+  user?: CommentUser;
   message?: string;
 }
 
